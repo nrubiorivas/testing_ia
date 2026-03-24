@@ -1,8 +1,8 @@
 :root {
-  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  color: #e5e7eb;
-  background: #0b1220;
-  line-height: 1.4;
+  font-family: 'Inter', 'SF Pro Text', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: #1f2937;
+  background: linear-gradient(180deg, #f4fbff 0%, #eef4ff 100%);
+  line-height: 1.45;
 }
 
 * {
@@ -12,6 +12,7 @@
 body {
   margin: 0;
   min-height: 100vh;
+  color: #1f2937;
 }
 
 a {
@@ -20,27 +21,29 @@ a {
 }
 
 .app-shell {
-  max-width: 900px;
+  max-width: 920px;
   margin: 0 auto;
-  padding: 0 1rem 5rem;
+  padding: 0 1rem 5.5rem;
 }
 
 .header {
   position: sticky;
   top: 0;
-  background: rgba(11, 18, 32, 0.88);
-  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #e5ecf4;
   padding: 1rem 0;
   z-index: 10;
 }
 
 .brand {
-  font-weight: 700;
-  font-size: 1.1rem;
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: #0f3d8f;
 }
 
 .main-content {
-  padding: 0.5rem 0 2rem;
+  padding: 0.85rem 0 2rem;
 }
 
 .stack {
@@ -57,9 +60,10 @@ a {
 }
 
 .card {
-  border-radius: 14px;
-  border: 1px solid #1f2937;
-  background: #111827;
+  border-radius: 16px;
+  border: 1px solid #dde7f2;
+  background: #ffffff;
+  box-shadow: 0 10px 28px rgba(40, 86, 160, 0.08);
   padding: 1rem;
 }
 
@@ -71,7 +75,18 @@ a {
 }
 
 .hero {
-  background: linear-gradient(145deg, #1d4ed8, #0f172a 70%);
+  background: linear-gradient(120deg, #ecfeff 0%, #eff6ff 48%, #eef2ff 100%);
+  border: 1px solid #c7def8;
+}
+
+.hero h1 {
+  margin: 0;
+  color: #0b3d91;
+}
+
+.hero p {
+  margin: 0.4rem 0 0;
+  color: #36547d;
 }
 
 .metrics-grid,
@@ -88,6 +103,7 @@ a {
   display: grid;
   gap: 0.35rem;
   font-size: 0.9rem;
+  color: #334155;
 }
 
 .full-width {
@@ -106,34 +122,43 @@ select,
 textarea {
   width: 100%;
   border-radius: 10px;
-  border: 1px solid #374151;
+  border: 1px solid #cad6e5;
   padding: 0.65rem 0.75rem;
-  background: #0f172a;
-  color: #f8fafc;
+  background: #fbfdff;
+  color: #0f172a;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid #93c5fd;
+  border-color: #60a5fa;
 }
 
 .button {
   border: 0;
   border-radius: 10px;
-  background: #2563eb;
+  background: linear-gradient(130deg, #2563eb 0%, #1d4ed8 100%);
   color: #fff;
-  font-weight: 600;
-  padding: 0.6rem 0.9rem;
+  font-weight: 700;
+  padding: 0.62rem 0.95rem;
   cursor: pointer;
 }
 
 .button.secondary {
-  background: #374151;
+  background: #e8f1ff;
+  color: #0f3d8f;
+  border: 1px solid #bfdbfe;
 }
 
 .button.danger {
-  background: #b91c1c;
+  background: #ef4444;
 }
 
 .text-button {
   border: 0;
   background: transparent;
-  color: #93c5fd;
+  color: #1d4ed8;
   cursor: pointer;
 }
 
@@ -143,17 +168,18 @@ textarea {
 }
 
 .metric {
-  font-size: 1.7rem;
-  font-weight: 700;
+  font-size: 1.75rem;
+  font-weight: 800;
   margin: 0;
+  color: #0f3d8f;
 }
 
 .error-text {
-  color: #fca5a5;
+  color: #dc2626;
 }
 
 .muted {
-  color: #9ca3af;
+  color: #64748b;
 }
 
 .bottom-nav {
@@ -164,22 +190,27 @@ textarea {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.4rem;
-  background: #0b1220;
-  border-top: 1px solid #1f2937;
+  background: rgba(255, 255, 255, 0.96);
+  border-top: 1px solid #d7e3f2;
   padding: 0.6rem;
+  backdrop-filter: blur(8px);
 }
 
 .bottom-nav a {
   text-align: center;
   font-size: 0.85rem;
-  color: #9ca3af;
-  padding: 0.35rem 0.2rem;
+  color: #64748b;
+  padding: 0.38rem 0.2rem;
   border-radius: 8px;
 }
 
 .bottom-nav a.active {
-  color: #fff;
-  background: #1f2937;
+  color: #0f3d8f;
+  background: #e8f1ff;
+}
+
+.hidden-input {
+  display: none;
 }
 
 @media (min-width: 768px) {
@@ -193,6 +224,7 @@ textarea {
     border: 0;
     background: transparent;
     padding: 0;
+    backdrop-filter: none;
   }
 
   .main-content {
@@ -206,8 +238,4 @@ textarea {
   .exercise-card .form-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-}
-
-.hidden-input {
-  display: none;
 }
