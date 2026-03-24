@@ -1,17 +1,18 @@
 import { createId } from '../utils/id';
 import type { WorkoutInput, ExerciseInput } from '../types/forms';
 import type { Workout, Exercise } from '../types/workout';
-import { parseWorkouts } from './validation';
+import { parseEnvelope, parseWorkouts } from './validation';
 
-const STORAGE_KEY = 'workout-journal.v1';
+const STORAGE_KEY = 'workout-journal.v2';
+const LEGACY_STORAGE_KEY = 'workout-journal.v1';
 
 const normalizeExercise = (input: ExerciseInput): Exercise => ({
   id: input.id ?? createId(),
   name: input.name.trim(),
   muscleGroup: input.muscleGroup,
-  sets: input.sets,
+  sets: Math.max(1, Math.trunc(input.sets)),
   reps: input.reps.trim(),
-  weight: input.weight,
+  weight: Number.isFinite(input.weight) && input.weight > 0 ? input.weight : 0,
   notes: input.notes?.trim() || undefined
 });
 
@@ -28,21 +29,57 @@ const normalizeWorkout = (input: WorkoutInput, existingId?: string, createdAt?: 
   };
 };
 
+const safeStorageGet = (key: string): string | null => {
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+};
+
+const safeStorageSet = (key: string, value: string): void => {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    // no-op: browser privacy mode can block storage access
+  }
+};
+
 const read = (): Workout[] => {
   try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
+    const raw = safeStorageGet(STORAGE_KEY);
+    if (raw) {
+      const envelope = parseEnvelope(JSON.parse(raw));
+      if (envelope) {
+        return envelope.workouts;
+      }
+
+      // if a v2 key exists but has legacy array payload, salvage it.
+      const legacyPayload = parseWorkouts(JSON.parse(raw));
+      if (legacyPayload.length > 0) {
+        return legacyPayload;
+      }
+    }
+
+    const legacyRaw = safeStorageGet(LEGACY_STORAGE_KEY);
+    if (!legacyRaw) {
       return [];
     }
 
-    return parseWorkouts(JSON.parse(raw));
+    return parseWorkouts(JSON.parse(legacyRaw));
   } catch {
     return [];
   }
 };
 
 const write = (workouts: Workout[]): void => {
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(workouts));
+  const payload = {
+    version: 2,
+    updatedAt: new Date().toISOString(),
+    workouts
+  };
+
+  safeStorageSet(STORAGE_KEY, JSON.stringify(payload));
 };
 
 export const workoutRepository = {

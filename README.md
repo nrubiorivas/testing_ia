@@ -21,11 +21,12 @@ A frontend-first workout tracking app designed for low-friction daily logging an
 
 ## Persistence Strategy
 
-Current: `localStorage` (`workout-journal.v1` key)
+Current: `localStorage` (`workout-journal.v2` key, with automatic migration from `v1`)
 
 Why:
 - Perfect for static hosting and zero backend setup
 - Instant reads/writes
+- Backward-compatible migration path for earlier browser data
 - Easy MVP iteration
 
 Future migration path:

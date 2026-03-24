@@ -25,19 +25,49 @@ const workoutSchema = z.object({
   id: z.string(),
   date: z.string(),
   title: z.string().optional(),
-  exercises: z.array(exerciseSchema),
+  exercises: z.array(exerciseSchema).min(1),
   createdAt: z.string(),
   updatedAt: z.string()
 });
 
-export const workoutListSchema = z.array(workoutSchema);
+const storageEnvelopeSchema = z.object({
+  version: z.literal(2),
+  updatedAt: z.string(),
+  workouts: z.array(z.unknown())
+});
+
+export interface StorageEnvelope {
+  version: 2;
+  updatedAt: string;
+  workouts: Workout[];
+}
 
 export const parseWorkouts = (payload: unknown): Workout[] => {
-  const parsed = workoutListSchema.safeParse(payload);
-
-  if (!parsed.success) {
+  if (!Array.isArray(payload)) {
     return [];
   }
 
-  return parsed.data;
+  const valid: Workout[] = [];
+
+  for (const maybeWorkout of payload) {
+    const parsed = workoutSchema.safeParse(maybeWorkout);
+    if (parsed.success) {
+      valid.push(parsed.data);
+    }
+  }
+
+  return valid;
+};
+
+export const parseEnvelope = (payload: unknown): StorageEnvelope | null => {
+  const parsed = storageEnvelopeSchema.safeParse(payload);
+  if (!parsed.success) {
+    return null;
+  }
+
+  return {
+    version: 2,
+    updatedAt: parsed.data.updatedAt,
+    workouts: parseWorkouts(parsed.data.workouts)
+  };
 };
