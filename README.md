@@ -199,3 +199,14 @@ Migration strategy:
 2. Add new repository implementation (`supabaseRepository`, `indexedDbRepository`, etc.).
 3. Switch provider wiring from localStorage repo to new adapter.
 4. Add import/export migration utility for existing local data.
+
+## Cross-browser sync (without backend server)
+
+Because browser storage is isolated per browser/profile, this project now includes an optional **GitHub Gist sync card**:
+
+1. Create a private GitHub Gist.
+2. Create a personal access token with `gist` scope.
+3. In both browsers, enter the same `gistId` and token.
+4. Use **Subir workouts** from browser A and **Descargar workouts** from browser B.
+
+This gives you a practical shared dataset across browsers while keeping the app static-hosted.

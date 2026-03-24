@@ -3,6 +3,7 @@ import { EmptyState } from '../components/EmptyState';
 import { WorkoutCard } from '../components/WorkoutCard';
 import { useWorkoutContext } from '../app/WorkoutContext';
 import { DataSyncCard } from '../components/DataSyncCard';
+import { CloudSyncCard } from '../components/CloudSyncCard';
 
 export const DashboardPage = () => {
   const { workouts, reloadFromStorage } = useWorkoutContext();
@@ -43,6 +44,7 @@ export const DashboardPage = () => {
       </section>
 
       <DataSyncCard onImported={reloadFromStorage} />
+      <CloudSyncCard onSynced={reloadFromStorage} />
 
       <section className="stack">
         <h2>Recent sessions</h2>
