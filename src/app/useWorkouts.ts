@@ -56,6 +56,7 @@ export const useWorkouts = () => {
     createWorkout,
     updateWorkout,
     removeWorkout,
-    getWorkoutById: (id: string) => workouts.find((workout) => workout.id === id)
+    getWorkoutById: (id: string) => workouts.find((workout) => workout.id === id),
+    reloadFromStorage: refresh
   };
 };

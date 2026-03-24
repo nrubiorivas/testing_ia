@@ -183,6 +183,7 @@ npm run deploy
 ## Limitations of this architecture
 
 - Data is tied to one browser/device profile
+- Export/Import manual backup is required to move data between browsers without backend sync
 - No account sync or multi-user support
 - localStorage size limits
 - No secure server-side backup

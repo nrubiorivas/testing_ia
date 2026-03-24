@@ -2,9 +2,10 @@ import { Link } from 'react-router-dom';
 import { EmptyState } from '../components/EmptyState';
 import { WorkoutCard } from '../components/WorkoutCard';
 import { useWorkoutContext } from '../app/WorkoutContext';
+import { DataSyncCard } from '../components/DataSyncCard';
 
 export const DashboardPage = () => {
-  const { workouts } = useWorkoutContext();
+  const { workouts, reloadFromStorage } = useWorkoutContext();
 
   const recent = workouts.slice(0, 3);
   const monthlyCount = workouts.filter((workout) => {
@@ -40,6 +41,8 @@ export const DashboardPage = () => {
           <small>all time</small>
         </article>
       </section>
+
+      <DataSyncCard onImported={reloadFromStorage} />
 
       <section className="stack">
         <h2>Recent sessions</h2>

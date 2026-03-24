@@ -54,7 +54,6 @@ const read = (): Workout[] => {
         return envelope.workouts;
       }
 
-      // if a v2 key exists but has legacy array payload, salvage it.
       const legacyPayload = parseWorkouts(JSON.parse(raw));
       if (legacyPayload.length > 0) {
         return legacyPayload;
@@ -117,5 +116,31 @@ export const workoutRepository = {
 
   remove(id: string): void {
     write(read().filter((workout) => workout.id !== id));
+  },
+
+  exportData(): string {
+    return JSON.stringify(
+      {
+        version: 2,
+        exportedAt: new Date().toISOString(),
+        workouts: read()
+      },
+      null,
+      2
+    );
+  },
+
+  importData(raw: string): { imported: number } {
+    const payload = JSON.parse(raw) as unknown;
+
+    const envelope = parseEnvelope(payload);
+    if (envelope) {
+      write(envelope.workouts);
+      return { imported: envelope.workouts.length };
+    }
+
+    const workouts = parseWorkouts(payload);
+    write(workouts);
+    return { imported: workouts.length };
   }
 };
